@@ -4,6 +4,9 @@ ShareGPT Builder is a simple Flask application that allows you to manually build
 
 For example datasets using this format, see my [Hermes 2.5 Dataset here](https://huggingface.co/datasets/teknium/OpenHermes-2.5).
 
+### New: There is now DPO Sample Building as well.
+
+
 ## Installation
 
 1. Clone the repository:
