@@ -31,6 +31,11 @@ cd sharegpt-builder
 3. Install the required Python packages:
 ```bash
 pip install flask
+```
+
+Or use the requirements file:
+```bash
+pip install -r requirements.txt
 ```  
 
 ## Usage
