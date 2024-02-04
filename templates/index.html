@@ -98,6 +98,9 @@
                 width: 100%;
                 margin: auto;
             }
+            .active {
+                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); /* Add a drop shadow */
+            }
         </style>
     </head>
     <body>
@@ -138,14 +141,20 @@
                 .catch(error => console.error('Error:', error));
             }
 
-            function openTab(tabName) {
-                var i, tabcontent;
+            function openTab(tabName, elmnt) {
+                var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
                 for (i = 0; i < tabcontent.length; i++) {
                     tabcontent[i].style.display = "none";
                 }
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
                 document.getElementById(tabName).style.display = "block";
+                elmnt.className += " active";
             }
+            document.getElementById("defaultOpen").click();
             </script>
     </body>
 </html>

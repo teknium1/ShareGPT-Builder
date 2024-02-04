@@ -43,7 +43,7 @@ def form():
             })
 
         # File path
-        file_path = './data.json'
+        file_path = './sft_data.json'
 
         # Check if file exists and append data
         if os.path.exists(file_path):
@@ -79,7 +79,7 @@ def dpo_form():
         }
 
         # File path
-        file_path = './dpo.json'
+        file_path = './dpo_data.json'
 
         # Check if file exists and append data
         if os.path.exists(file_path):
