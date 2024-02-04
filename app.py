@@ -75,7 +75,7 @@ def dpo_form():
             'question': prompt,
             'chosen': chosen,
             'rejected': rejected,
-            'source': 'dpo'
+            'source': 'manual'
         }
 
         # File path
