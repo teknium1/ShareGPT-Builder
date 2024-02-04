@@ -3,12 +3,14 @@
 ShareGPT Builder is a versatile Flask application that provides two key functionalities for training Language Learning Models (LLMs). 
 
 ### Supervised Fine-Tuning (SFT) Conversation Sample Builder:
-Firstly, it allows you to manually construct and store ShareGPT Formatted (SFT) conversations involving a system, a human, and GPT role. These conversations are stored in a JSON file and are automatically appended if the data file already exists. For datasets using this format, refer to the [Hermes 2.5 Dataset here](https://huggingface.co/datasets/teknium/OpenHermes-2.5).
+Firstly, it allows you to manually construct and store ShareGPT Formatted (SFT) conversations involving a system, a human, and GPT role. These conversations are stored in a JSON file and are automatically appended if the data file already exists. 
+
+For datasets using this format, refer to the [Hermes 2.5 Dataset here](https://huggingface.co/datasets/teknium/OpenHermes-2.5).
 
 <img width="902" alt="image" src="https://github.com/teknium1/ShareGPT-Builder/assets/127238744/a83f02ca-3832-45d3-b3f4-9fdfc748aebc">
 
 ### Direct Preference Optimization (DPO) RLHF Sample Builder:
-Secondly, the application also includes a DPO Sample Builder. This feature enables the creation of sample comparison response conversations, one with chosen responses and one with rejected responses, for Reinforcement Learning from Human Feedback (RLHF).
+Secondly, the application also includes a DPO Sample Builder. This feature enables the creation of sample comparison conversation responses, for Reinforcement Learning from Human Feedback (RLHF). This data gets saved to `dpo_data.json`, and is in the Intel NeuralChat DPO format.
 
 <img width="902" alt="image" src="https://github.com/teknium1/ShareGPT-Builder/assets/127238744/2be164ae-17cd-4e10-ae72-0f6aba9a5436">
 
