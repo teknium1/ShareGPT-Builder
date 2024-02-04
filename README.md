@@ -1,10 +1,12 @@
 # ShareGPT Builder
 
-ShareGPT Builder is a simple Flask application that allows you to manually build and store ShareGPT Formatted conversations for training LLM's with a system, a human, and GPT role. The conversations are stored in a JSON file, and automatically append themselves if the data file already exists.
+ShareGPT Builder is a versatile Flask application that provides two key functionalities for training Language Learning Models (LLMs). 
 
-For example datasets using this format, see my [Hermes 2.5 Dataset here](https://huggingface.co/datasets/teknium/OpenHermes-2.5).
+### Supervised Fine-Tuning (SFT) Conversation Sample Builder:
+Firstly, it allows you to manually construct and store ShareGPT Formatted (SFT) conversations involving a system, a human, and GPT role. These conversations are stored in a JSON file and are automatically appended if the data file already exists. For datasets using this format, refer to the [Hermes 2.5 Dataset here](https://huggingface.co/datasets/teknium/OpenHermes-2.5).
 
-### New: There is now DPO Sample Building as well.
+### Direct Preference Optimization (DPO) RLHF Sample Builder:
+Secondly, the application also includes a DPO Sample Builder. This feature enables the creation of sample comparison response conversations, one with chosen responses and one with rejected responses, for Reinforcement Learning from Human Feedback (RLHF).
 
 
 ## Installation
