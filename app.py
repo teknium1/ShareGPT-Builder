@@ -67,7 +67,7 @@ def dpo_form():
         system_prompt = request.form.get('system')
         prompt = request.form.get('prompt')
         chosen = request.form.get('chosen')
-        rejected = request.form.getlist('rejected[]')
+        rejected = request.form.get('rejected')
 
         # Data to be appended
         data_to_append = {
