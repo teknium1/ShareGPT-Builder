@@ -1,15 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
-import json
-import os
+import json, os
 
 app = Flask(__name__)
+
+def clean_entry(entry):
+    entry = entry.strip().replace("\r", "").replace(" \n", "\n")
+    return entry
 
 # Route for index/main page
 @app.route('/', defaults={'active_tab': 'sft'})
 @app.route('/<active_tab>')
 def index(active_tab):
     return render_template('index.html', active_tab=active_tab)
-
 
 # Route for the SFT Dataset Builder.
 @app.route('/sft', methods=['GET', 'POST'])
@@ -20,6 +22,11 @@ def form():
         user_prompts = request.form.getlist('user[]')
         gpt_responses = request.form.getlist('gpt[]')
 
+        # Clean the system prompt, user prompts, and gpt responses
+        system_prompt = clean_entry(system_prompt)
+        user_prompts = [clean_entry(prompt) for prompt in user_prompts]
+        gpt_responses = [clean_entry(response) for response in gpt_responses]
+        
         # Data to be appended
         data_to_append = {
             'conversations': [
@@ -71,10 +78,10 @@ def dpo_form():
 
         # Data to be appended
         data_to_append = {
-            'system': system_prompt,
-            'question': prompt,
-            'chosen': chosen,
-            'rejected': rejected,
+            'system': clean_entry(system_prompt),
+            'question': clean_entry(prompt),
+            'chosen': clean_entry(chosen),
+            'rejected': clean_entry(rejected),
             'source': 'manual'
         }
 
