@@ -1,0 +1,185 @@
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f8f8f8;
+}
+.container {
+    max-width: 820px;
+    width: 80%;
+    margin: auto;
+}
+form {
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.system-container {
+    display: flex;
+    max-width: 560px;
+    background-color: #fff;
+    padding: 10px;
+    margin: 10px 10px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    gap: 15px;
+    width: calc(100% - 30px);
+}
+.turn {
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    gap: 20px;
+    padding: 10px;
+    margin: 10px 10px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    width: calc(100% - 40px);
+}
+
+.turn div {
+    width: 100%;
+}
+.turn button {
+    margin-top: 20px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: start;
+}
+
+.turns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 8px;
+    height: 500px;
+    overflow-y: scroll;
+    font-weight: bold;
+    padding-bottom: 40px;
+    overflow-x: hidden;
+}
+
+textarea {
+    width: 100%;
+    min-height: 40px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: vertical;
+    outline: none;
+}
+
+button, input[type="submit"] {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.1s ease-in;
+}
+button:hover, input[type="submit"]:hover {
+    background-color: black;
+    color: white;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+.button-container input {
+    margin-right: 10px; /* Add right margin to create space between buttons */
+    height: 40px;    
+}
+.button-container input:last-child {
+    margin-right: 0; /* Remove right margin for the last button */
+
+}
+.button-container-two {
+    display: flex;
+    justify-content: center;
+}
+.button-container-two button {
+    margin-right: 10px; /* Add right margin to create space between buttons */
+    
+}
+.button-container-two button:last-child {
+    margin-right: 0; /* Remove right margin for the last button */
+}
+
+#add-turn-btn{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.2);
+    margin-top: 10px; 
+    align-self: center;
+}
+.footer {
+    text-align: center;
+    margin-top: 20px;
+}
+.tablink {
+    background-color: white;
+    color: black;
+    float: left;
+    border: 2px solid black;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 20%;
+}
+
+.tablink:hover {
+    background-color: black;
+    color: white;
+}
+
+/* Style the tab content (and add it to a container for full width) */
+.tabcontent {
+    color: black;
+    display: none;
+    padding: 50px;
+    text-align: left;
+}
+
+.tabcontainer {
+    width: 100%;
+    margin: auto;
+}
+.active {
+    background-color: black;
+    color: white;
+}
+
+.toast {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    border: 2px solid;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.toast.success {
+    background-color: rgba(95, 177, 44, 0.511);
+    border-color: #3a8028;
+    color: #3a8028;
+}
+
+.toast.error {
+    background-color: rgba(177, 44, 44, 0.507);
+    border-color: #bd3e3e;
+    color: #bd3e3e;
+}

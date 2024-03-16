@@ -1,160 +1,21 @@
 <!DOCTYPE html>
-<script src="{{ url_for('static', filename='main.js') }}"></script>
 <html>
-    <head>
-        <title>ShareGPT Builder</title>
-        <style>
-            h1 {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            body {
-                font-family: Arial, sans-serif;
-                padding: 20px;
-                background-color: #f8f8f8;
-            }
-            .container {
-                width: 50%;
-                margin: auto;
-            }
-            form {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            }
-            .turn {
-                margin-bottom: 20px;
-            }
-            textarea {
-                width: 100%;
-                min-height: 100px;
-                padding: 10px;
-                border-radius: 5px;
-                border: 1px solid #ddd;
-                box-sizing: border-box;
-            }
-            button, input[type="submit"] {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-            button:hover, input[type="submit"]:hover {
-                background-color: #45a049;
-            }
-            .button-container {
-                display: flex;
-                justify-content: right;
-                margin-right: 10px;
-            }
-            .button-container button {
-                margin-right: 10px; /* Add right margin to create space between buttons */
-            }
-            .button-container button:last-child {
-                margin-right: 0; /* Remove right margin for the last button */
-            }
-            .button-container-two {
-                display: flex;
-                justify-content: center;
-            }
-            .button-container-two button {
-                margin-right: 10px; /* Add right margin to create space between buttons */
-            }
-            .button-container-two button:last-child {
-                margin-right: 0; /* Remove right margin for the last button */
-            }
-            .footer {
-                text-align: center;
-                margin-top: 20px;
-            }
-            .tablink {
-                background-color: #4CAF50;
-                color: white;
-                float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                font-size: 17px;
-                width: 20%;
-            }
-
-            .tablink:hover {
-                background-color: #45a049;
-            }
-
-            /* Style the tab content (and add it to a container for full width) */
-            .tabcontent {
-                color: black;
-                display: none;
-                padding: 50px;
-                text-align: left;
-            }
-
-            .tabcontainer {
-                width: 100%;
-                margin: auto;
-            }
-            .active {
-                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); /* Add a drop shadow */
-            }
-        </style>
-    </head>
-    <body>
-        <h1>ShareGPT Builder</h1> <!-- Ensure this is before the tabs -->
-
-        <div class="tabcontainer">
-            <div class="button-container-two">
-                <button class="tablink" onclick="openTab('sft', this)" id="defaultOpen">SFT</button>
-                <button class="tablink" onclick="openTab('dpo', this)">DPO</button>
-            </div>
-    
-            <div id="sft" class="tabcontent">
-                {% include 'sft_form.html' %}
-            </div>
-    
-            <div id="dpo" class="tabcontent">
-                {% include 'dpo_form.html' %}
-            </div>
+<head>
+    <title>ShareGPT Builder</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <h1>ShareGPT Builder</h1>
+    <div class="tabcontainer">
+        <div class="button-container-two">
+            <button class="tablink" onclick="openTab('sft', this)" id="defaultOpen">SFT</button>
+            <button class="tablink" onclick="openTab('dpo', this)">DPO</button>
         </div>
-    
-        <script>
-            function submitForm(e, formId, tabName) {
-                e.preventDefault();
-                var form = document.getElementById(formId);
-                fetch(form.action, {
-                    method: form.method,
-                    body: new FormData(form)
-                })
-                .then(response => {
-                    if (response.ok) {
-                        // On success, open the specified tab and update the URL
-                        openTab(tabName);
-                        history.pushState({}, "", "/");
-                    } else {
-                        alert("Form submission failed.");
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            }
-
-            function openTab(tabName, elmnt) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablink");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(tabName).style.display = "block";
-                elmnt.className += " active";
-            }
-            document.getElementById("defaultOpen").click();
-            </script>
-    </body>
+        <div id="sft" class="tabcontent">{% include 'sft_form.html' %}</div>
+        <div id="dpo" class="tabcontent">{% include 'dpo_form.html' %}</div>
+    </div>
+    <div id="toast"></div>
+    <script src="../static/script.js"></script>
+</body>
 </html>

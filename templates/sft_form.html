@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<script src="{{ url_for('static', filename='main.js') }}"></script>
 <html>
 <head>
     <title>ShareGPT Builder</title>
 </head>
 <body>
     <div class="container">
-        <form id="sftForm" action="/sft" method="POST" onsubmit="submitForm(event, 'sftForm', 'sft')">
-            <div id="turns">
+        <form id="sftForm" action="/sft" method="POST" onsubmit="submitForm(event, 'sft')">
+            <div class="turns" id="turns">
+                <div class="system-container">
+                    <label for="system">System:</label>
+                    <textarea id="system" name="system"></textarea>
+                </div>
                 <div class="turn">
-                    <div>
-                        <label for="system">System:</label>
-                        <textarea id="system" name="system"></textarea>
-                    </div>
                     <div>
                         <label for="user">User:</label>
                         <textarea id="user" name="user[]"></textarea>
@@ -21,28 +20,14 @@
                         <label for="gpt">GPT:</label>
                         <textarea id="gpt" name="gpt[]"></textarea>
                     </div>
+                    <button type="button" class="delete-turn" onclick="deleteTurn(this)">Delete</button>
                 </div>
             </div>
             <div class="button-container">
-                <button type="button" onclick="addTurn()">Add Turn</button>
+                <button type="button" id="add-turn-btn" onclick="addTurn()"><i class="fa-solid fa-plus"></i></button>
                 <input type="submit" value="Submit">
             </div>
         </form>
     </div>
-    <script>
-    function addTurn() {
-        var turns = document.getElementById('turns');
-        var newTurn = document.createElement('div');
-        newTurn.innerHTML = '<div><label for="user">User:</label><textarea id="user" name="user[]"></textarea></div><div><label for="gpt">GPT:</label><textarea id="gpt" name="gpt[]"></textarea></div>';
-        turns.appendChild(newTurn);
-    }
-    </script>
-    <script>
-        document.getElementById("sftForm").addEventListener("submit", function(){
-            setTimeout(function() {
-                document.getElementById("sftForm").reset();
-            }, 10);
-        });
-    </script>
 </body>
 </html>

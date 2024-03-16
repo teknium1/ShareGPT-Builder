@@ -4,8 +4,7 @@ import json, os
 app = Flask(__name__)
 
 def clean_entry(entry):
-    entry = entry.strip().replace("\r", "").replace(" \n", "\n")
-    return entry
+    return entry.strip().replace("\r", "").replace(" \n", "\n")
 
 # Route for index/main page
 @app.route('/', defaults={'active_tab': 'sft'})
@@ -18,41 +17,21 @@ def index(active_tab):
 def form():
     if request.method == 'POST':
         # Extract form data
-        system_prompt = request.form.get('system')
-        user_prompts = request.form.getlist('user[]')
-        gpt_responses = request.form.getlist('gpt[]')
+        system_prompt = clean_entry(request.form.get('system'))
+        user_prompts = [clean_entry(prompt) for prompt in request.form.getlist('user[]')]
+        gpt_responses = [clean_entry(response) for response in request.form.getlist('gpt[]')]
 
-        # Clean the system prompt, user prompts, and gpt responses
-        system_prompt = clean_entry(system_prompt)
-        user_prompts = [clean_entry(prompt) for prompt in user_prompts]
-        gpt_responses = [clean_entry(response) for response in gpt_responses]
-        
-        # Data to be appended
         data_to_append = {
-            'conversations': [
-                {
-                    'from': 'system',
-                    'value': system_prompt
-                }
-            ],
+            'conversations': [{'from': 'system', 'value': system_prompt}],
             'source': 'manual'
         }
 
-        # Add turns to the conversation
         for user_prompt, gpt_response in zip(user_prompts, gpt_responses):
-            data_to_append['conversations'].append({
-                'from': 'human',
-                'value': user_prompt
-            })
-            data_to_append['conversations'].append({
-                'from': 'gpt',
-                'value': gpt_response
-            })
+            data_to_append['conversations'].append({'from': 'human', 'value': user_prompt})
+            data_to_append['conversations'].append({'from': 'gpt', 'value': gpt_response})
 
-        # File path
         file_path = './sft_data.json'
 
-        # Check if file exists and append data
         if os.path.exists(file_path):
             with open(file_path, 'r+', encoding='utf-8') as file:
                 data = json.load(file)
@@ -63,32 +42,23 @@ def form():
             with open(file_path, 'w', encoding='utf-8') as file:
                 json.dump([data_to_append], file, indent=4)
 
-        return redirect(url_for('index'))
-    return redirect(url_for('index'))
+    return redirect(url_for('index', active_tab='sft'))
 
 # Route for the DPO dataset builder
 @app.route('/dpo', methods=['GET', 'POST'])
 def dpo_form():
     if request.method == 'POST':
         # Extract form data
-        system_prompt = request.form.get('system')
-        prompt = request.form.get('prompt')
-        chosen = request.form.get('chosen')
-        rejected = request.form.get('rejected')
-
-        # Data to be appended
         data_to_append = {
-            'system': clean_entry(system_prompt),
-            'question': clean_entry(prompt),
-            'chosen': clean_entry(chosen),
-            'rejected': clean_entry(rejected),
+            'system': clean_entry(request.form.get('system')),
+            'question': clean_entry(request.form.get('prompt')),
+            'chosen': clean_entry(request.form.get('chosen')),
+            'rejected': clean_entry(request.form.get('rejected')),
             'source': 'manual'
         }
 
-        # File path
         file_path = './dpo_data.json'
 
-        # Check if file exists and append data
         if os.path.exists(file_path):
             with open(file_path, 'r+', encoding='utf-8') as file:
                 data = json.load(file)
@@ -100,6 +70,7 @@ def dpo_form():
                 json.dump([data_to_append], file, indent=4)
 
         return "Success", 200
+
     return render_template('index.html', active_tab='dpo')
 
 if __name__ == '__main__':
