@@ -103,4 +103,4 @@ def dpo_form():
     return render_template('index.html', active_tab='dpo')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=7272)
