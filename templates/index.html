@@ -101,6 +101,53 @@
             .active {
                 box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); /* Add a drop shadow */
             }
+
+            #successToast {
+                visibility: hidden; 
+                min-width: 250px; 
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                background-color: #dcfce7; 
+                color: #15803d; 
+                text-align: left; 
+                border-radius: 4px;
+                border: 1px solid #bbf7d0;
+                padding: 1rem; 
+                z-index: 1;
+                height: 50px;
+                display: inline-block;
+            }
+
+            /* Show the successToast (class added with JavaScript) */
+            #successToast.show {
+                visibility: visible; /* Show the successToast */
+                /* Add animation: Take 0.5 seconds to fade in and out the successToast.
+                However, delay the fade out process for 2.5 seconds */
+                -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+                animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            }
+
+            /* Animations to fade the successToast in and out */
+            @-webkit-keyframes fadein {
+                from {bottom: 0; opacity: 0;}
+                to {bottom: 30px; opacity: 1;}
+            }
+
+            @keyframes fadein {
+                from {bottom: 0; opacity: 0;}
+                to {bottom: 30px; opacity: 1;}
+            }
+
+            @-webkit-keyframes fadeout {
+                from {bottom: 30px; opacity: 1;}
+                to {bottom: 0; opacity: 0;}
+            }
+
+            @keyframes fadeout {
+                from {bottom: 30px; opacity: 1;}
+                to {bottom: 0; opacity: 0;}
+            }
         </style>
     </head>
     <body>
@@ -120,6 +167,9 @@
                 {% include 'dpo_form.html' %}
             </div>
         </div>
+
+        <!-- Toast Success -->
+        <div id="successToast">Submitted Successfully</div>
     
         <script>
             function submitForm(e, formId, tabName) {
@@ -131,6 +181,7 @@
                 })
                 .then(response => {
                     if (response.ok) {
+                        showToast();
                         // On success, open the specified tab and update the URL
                         openTab(tabName);
                         history.pushState({}, "", "/");
@@ -155,6 +206,19 @@
                 elmnt.className += " active";
             }
             document.getElementById("defaultOpen").click();
+
+            function showToast() {                
+                // Get the successToast DIV
+                let x = document.getElementById("successToast");
+
+                // Add the "show" class to DIV
+                x.className = "show";
+
+                // After 1.5 seconds, remove the show class from DIV and reset the success count
+                setTimeout(function(){ 
+                    x.className = x.className.replace("show", ""); 
+                }, 1500);
+            }
             </script>
     </body>
 </html>
