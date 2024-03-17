@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <script src="{{ url_for('static', filename='main.js') }}"></script>
 <html>
-   <head>
-       <title>ShareGPT Builder</title>
-       <style>
+    <head>
+        <title>ShareGPT Builder</title>
+        <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
 
 h1 {
@@ -125,6 +125,7 @@ button:hover, input[type="submit"]:hover {
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 1px;
+    width: 250px;
 }
 
 .tablink:hover {
@@ -143,6 +144,7 @@ button:hover, input[type="submit"]:hover {
 .tabcontainer {
     width: 100%;
     margin: auto;
+    height: 100vw;
 }
 .active {
     box-shadow: 0 0 20px rgba(0, 255, 159, 0.3);
@@ -159,160 +161,60 @@ button:hover, input[type="submit"]:hover {
 #sftForm {
     margin-top: 40px;
 }
-       </style>
-   </head>
-   <body>
-       <h1>ShareGPT Builder</h1>
+        </style>
+    </head>
+    <body>
+        <h1>ShareGPT Builder</h1> <!-- Ensure this is before the tabs -->
 
-       <div class="tabcontainer">
-           <div class="button-container-two">
-               <button class="tablink" onclick="openTab('sft', this)" id="defaultOpen">SFT</button>
-               <button class="tablink" onclick="openTab('dpo', this)">DPO</button>
-           </div>
-   
-           <div id="sft" class="tabcontent">
-               {% include 'sft_form.html' %}
-           </div>
-   
-           <div id="dpo" class="tabcontent">
-               {% include 'dpo_form.html' %}
-           </div>
-       </div>
-   
-       <script>
-           function submitForm(e, formId, tabName) {
-               e.preventDefault();
-               var form = document.getElementById(formId);
-               fetch(form.action, {
-                   method: form.method,
-                   body: new FormData(form)
-               })
-               .then(response => {
-                   if (response.ok) {
-                       openTab(tabName);
-                       history.pushState({}, "", "/");
-                   } else {
-                       alert("Form submission failed.");
-                   }
-               })
-               .catch(error => console.error('Error:', error));
-           }
+        <div class="tabcontainer">
+            <div class="button-container-two">
+                <button class="tablink" onclick="openTab('sft', this)" id="defaultOpen">SFT</button>
+                <button class="tablink" onclick="openTab('dpo', this)">DPO</button>
+            </div>
+    
+            <div id="sft" class="tabcontent">
+                {% include 'sft_form.html' %}
+            </div>
+    
+            <div id="dpo" class="tabcontent">
+                {% include 'dpo_form.html' %}
+            </div>
+        </div>
+    
+        <script>
+            function submitForm(e, formId, tabName) {
+                e.preventDefault();
+                var form = document.getElementById(formId);
+                fetch(form.action, {
+                    method: form.method,
+                    body: new FormData(form)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // On success, open the specified tab and update the URL
+                        openTab(tabName);
+                        history.pushState({}, "", "/");
+                    } else {
+                        alert("Form submission failed.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
 
-           function openTab(tabName, elmnt) {
-               var i, tabcontent, tablinks;
-               tabcontent = document.getElementsByClassName("tabcontent");
-               for (i = 0; i < tabcontent.length; i++) {
-                   tabcontent[i].style.display = "none";
-               }
-               tablinks = document.getElementsByClassName("tablink");
-               for (i = 0; i < tablinks.length; i++) {
-                   tablinks[i].className = tablinks[i].className.replace(" active", "");
-               }
-               document.getElementById(tabName).style.display = "block";
-               elmnt.className += " active";
-           }
-           document.getElementById("defaultOpen").click();
-       </script>
-   </body>
-</html>
-
-<!DOCTYPE html>
-<script src="{{ url_for('static', filename='main.js') }}"></script>
-<html>
-<head>
-    <title>ShareGPT Builder</title>
-</head>
-<body>
-    <div class="container">
-        <form id="sftForm" action="/sft" method="POST" onsubmit="submitForm(event, 'sftForm', 'sft')">
-            <div id="turns">
-                <div class="turn">
-                    <div>
-                        <label for="system">System:</label>
-                        <textarea id="system" name="system"></textarea>
-                    </div>
-                    <div>
-                        <label for="user">User:</label>
-                        <textarea id="user" name="user[]"></textarea>
-                    </div>
-                    <div>
-                        <label for="gpt">GPT:</label>
-                        <textarea id="gpt" name="gpt[]"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="button-container">
-                <button type="button" onclick="addTurn()">Add Turn</button>
-                <input type="submit" value="Submit">
-            </div>
-        </form>
-    </div>
-    <script>
-    function addTurn() {
-        var turns = document.getElementById('turns');
-        var newTurn = document.createElement('div');
-        newTurn.innerHTML = '<div><label for="user">User:</label><textarea id="user" name="user[]"></textarea></div><div><label for="gpt">GPT:</label><textarea id="gpt" name="gpt[]"></textarea></div>';
-        turns.appendChild(newTurn);
-    }
-    </script>
-    <script>
-        document.getElementById("sftForm").addEventListener("submit", function(){
-            setTimeout(function() {
-                document.getElementById("sftForm").reset();
-            }, 10);
-        });
-    </script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<script src="{{ url_for('static', filename='main.js') }}"></script>
-<html>
-<head>
-    <title>DPO Builder</title>
-    <!-- Add your CSS here -->
-</head>
-<body>
-    <div class="container">
-        <!-- Add action attribute to the form tag -->
-        <form id="dpoForm" action="{{ url_for('dpo_form') }}" method="POST" onsubmit="submitForm(event, 'dpoForm', 'dpo')">
-            <div>
-                <label for="system">System:</label>
-                <textarea id="system" name="system"></textarea>
-            </div>
-            <div>
-                <label for="prompt">Prompt:</label>
-                <textarea id="prompt" name="prompt"></textarea>
-            </div>
-            <div>
-                <label for="chosen">Chosen:</label>
-                <textarea id="chosen" name="chosen"></textarea>
-            </div>
-            <div id="rejections">
-                <div>
-                    <label for="rejected">Rejected:</label>
-                    <textarea id="rejected" name="rejected"></textarea> <!-- Changed name from "rejected[]" to "rejected" -->
-                </div>
-            </div>
-            <div class="button-container">
-                <input type="submit" value="Submit">
-            </div>
-        </form>
-    </div>
-    <script>
-    function addRejection() {
-        var rejections = document.getElementById('rejections');
-        var newRejection = document.createElement('div');
-        newRejection.innerHTML = '<label for="rejected">Rejected:</label><textarea id="rejected" name="rejected"></textarea>'; <!-- Changed name from "rejected[]" to "rejected" -->
-        rejections.appendChild(newRejection);
-    }
-    </script>
-    <script>
-        document.getElementById("dpoForm").addEventListener("submit", function(){
-            setTimeout(function() {
-                document.getElementById("dpoForm").reset();
-            }, 10);
-        });
-    </script>
-</body>
+            function openTab(tabName, elmnt) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabName).style.display = "block";
+                elmnt.className += " active";
+            }
+            document.getElementById("defaultOpen").click();
+            </script>
+    </body>
 </html>
