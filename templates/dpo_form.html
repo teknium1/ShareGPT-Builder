@@ -1,51 +1,39 @@
 <!DOCTYPE html>
-<script src="{{ url_for('static', filename='main.js') }}"></script>
 <html>
 <head>
     <title>DPO Builder</title>
-    <!-- Add your CSS here -->
 </head>
 <body>
     <div class="container">
-        <!-- Add action attribute to the form tag -->
-        <form id="dpoForm" action="{{ url_for('dpo_form') }}" method="POST" onsubmit="submitForm(event, 'dpoForm', 'dpo')">
-            <div>
-                <label for="system">System:</label>
-                <textarea id="system" name="system"></textarea>
-            </div>
-            <div>
-                <label for="prompt">Prompt:</label>
-                <textarea id="prompt" name="prompt"></textarea>
-            </div>
-            <div>
-                <label for="chosen">Chosen:</label>
-                <textarea id="chosen" name="chosen"></textarea>
-            </div>
-            <div id="rejections">
-                <div>
-                    <label for="rejected">Rejected:</label>
-                    <textarea id="rejected" name="rejected"></textarea> <!-- Changed name from "rejected[]" to "rejected" -->
+        <form id="dpoForm" action="/dpo" method="POST" onsubmit="submitForm(event, 'dpo')">
+            <div class="turns" id="dpoTurns">
+                <button type="button" onclick="resetForm('dpo')"><i class="fa-solid fa-rotate-right"></i></button>
+                <div class="system-container">
+                    <label for="system">System:</label>
+                    <textarea id="system" name="system"></textarea>
+                </div>
+                
+                <div class="turn">
+                    <div>
+                        <label for="prompt">Prompt:</label>
+                        <textarea id="prompt" name="prompt"></textarea>
+                    </div>
+                    <div>
+                        <label for="chosen">Chosen:</label>
+                        <textarea id="chosen" name="chosen"></textarea>
+                    </div>
+                    <div>
+                        <label for="rejected">Rejected:</label>
+                        <textarea id="rejected" name="rejected"></textarea>
+                    </div>
+                    <button type="button" class="delete-turn" onclick="deleteTurn(this)">Delete</button>
                 </div>
             </div>
             <div class="button-container">
+                <button type="button" id="add-turn-btn" onclick="addTurn('dpo')"><i class="fa-solid fa-plus"></i></button>
                 <input type="submit" value="Submit">
             </div>
         </form>
     </div>
-    <script>
-    function addRejection() {
-        var rejections = document.getElementById('rejections');
-        var newRejection = document.createElement('div');
-        newRejection.innerHTML = '<label for="rejected">Rejected:</label><textarea id="rejected" name="rejected"></textarea>'; <!-- Changed name from "rejected[]" to "rejected" -->
-        rejections.appendChild(newRejection);
-    }
-    </script>
-    <script>
-        document.getElementById("dpoForm").addEventListener("submit", function(){
-            setTimeout(function() {
-                document.getElementById("dpoForm").reset();
-            }, 10);
-        });
-    </script>
 </body>
 </html>
