@@ -4,103 +4,163 @@
     <head>
         <title>ShareGPT Builder</title>
         <style>
-            h1 {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            body {
-                font-family: Arial, sans-serif;
-                padding: 20px;
-                background-color: #f8f8f8;
-            }
-            .container {
-                width: 50%;
-                margin: auto;
-            }
-            form {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            }
-            .turn {
-                margin-bottom: 20px;
-            }
-            textarea {
-                width: 100%;
-                min-height: 100px;
-                padding: 10px;
-                border-radius: 5px;
-                border: 1px solid #ddd;
-                box-sizing: border-box;
-            }
-            button, input[type="submit"] {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-            button:hover, input[type="submit"]:hover {
-                background-color: #45a049;
-            }
-            .button-container {
-                display: flex;
-                justify-content: right;
-                margin-right: 10px;
-            }
-            .button-container button {
-                margin-right: 10px; /* Add right margin to create space between buttons */
-            }
-            .button-container button:last-child {
-                margin-right: 0; /* Remove right margin for the last button */
-            }
-            .button-container-two {
-                display: flex;
-                justify-content: center;
-            }
-            .button-container-two button {
-                margin-right: 10px; /* Add right margin to create space between buttons */
-            }
-            .button-container-two button:last-child {
-                margin-right: 0; /* Remove right margin for the last button */
-            }
-            .footer {
-                text-align: center;
-                margin-top: 20px;
-            }
-            .tablink {
-                background-color: #4CAF50;
-                color: white;
-                float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                font-size: 17px;
-                width: 20%;
-            }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
 
-            .tablink:hover {
-                background-color: #45a049;
-            }
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #00ff9f;
+    text-shadow: 0 0 10px rgba(0, 255, 159, 0.3);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 32px;
+}
+body {
+    font-family: 'Orbitron', sans-serif;
+    padding: 20px;
+    background-color: #0c0c0c;
+    color: #00ff9f;
+    background-image: radial-gradient(circle at center, rgba(0, 255, 159, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100vmax;
+}
+.container {
+    width: 50%;
+    margin: auto;
+}
+form {
+    background-color: #1c1c1c;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 255, 159, 0.1);
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+form::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(45deg, rgba(0, 255, 159, 0.1), rgba(0, 255, 159, 0));
+    z-index: -1;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+.turn {
+    margin-bottom: 20px;
+}
+textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #00ff9f;
+    background-color: rgba(12, 12, 12, 0.7);
+    color: #00ff9f;
+    box-sizing: border-box;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    backdrop-filter: blur(5px);
+}
+button, input[type="submit"] {
+    background-color: #00ff9f;
+    color: #0c0c0c;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+button:hover, input[type="submit"]:hover {
+    background-color: #00d184;
+    box-shadow: 0 0 20px rgba(0, 255, 159, 0.3);
+    transform: translateY(-2px);
+}
+.button-container {
+    display: flex;
+    justify-content: right;
+    margin-right: 10px;
+}
+.button-container button {
+    margin-right: 10px;
+}
+.button-container button:last-child {
+    margin-right: 0;
+}
+.button-container-two {
+    display: flex;
+    justify-content: center;
+}
+.button-container-two button {
+    margin-right: 10px;
+}
+.button-container-two button:last-child {
+    margin-right: 0;
+}
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #00ff9f;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+.tablink {
+    background-color: #00ff9f;
+    color: #0c0c0c;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    font-size: 16px;
+    width: 20%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    width: 250px;
+}
 
-            /* Style the tab content (and add it to a container for full width) */
-            .tabcontent {
-                color: black;
-                display: none;
-                padding: 50px;
-                text-align: left;
-            }
+.tablink:hover {
+    background-color: #00d184;
+    box-shadow: 0 0 20px rgba(0, 255, 159, 0.3);
+    transform: translateY(-2px);
+}
 
-            .tabcontainer {
-                width: 100%;
-                margin: auto;
-            }
-            .active {
-                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); /* Add a drop shadow */
-            }
+.tabcontent {
+    color: #00ff9f;
+    display: none;
+    padding: 40px;
+    text-align: left;
+}
+
+.tabcontainer {
+    width: 100%;
+    margin: auto;
+    height: 100vw;
+}
+.active {
+    box-shadow: 0 0 20px rgba(0, 255, 159, 0.3);
+}
+
+.container {
+    width: 500px;
+    margin: auto;
+}
+#dpoForm {
+    margin-top: 40px;
+}
+
+#sftForm {
+    margin-top: 40px;
+}
         </style>
     </head>
     <body>
