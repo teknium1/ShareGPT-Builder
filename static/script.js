@@ -12,9 +12,20 @@ function submitForm(e, tabName) {
     e.preventDefault();
     const form = document.getElementById(tabName === 'sft' ? 'sftForm' : 'dpoForm');
     const formElements = form.elements;
-    const allFieldsFilled = Array.from(formElements).every(el => el.tagName !== 'TEXTAREA' || el.value.trim() !== '');
+    const allFieldsFilled = Array.from(formElements).every(el => {
+        if (el.tagName === 'TEXTAREA') {
+            if (el.id === 'system') {
+                return true;
+            } else {
+                return el.value.trim() !== '';
+            }
+        }
+        return true;
+    });
 
-    if (tabName === 'sft' && document.getElementsByClassName('turn').length <= 1) {
+    const turns = document.getElementById(tabName + 'Turns');
+    const turnElements = turns.getElementsByClassName('turn');
+    if (turnElements.length  === 0) {
         showToast("Please add at least one turn.", 'error');
         return;
     }
@@ -26,10 +37,7 @@ function submitForm(e, tabName) {
         })
         .then(response => {
             if (response.ok) {
-                form.reset();
-                if (tabName === 'sft') {
-                    resetSFTForm();
-                }
+                resetForm(tabName);
                 openJsonModal(tabName);
                 showToast("Submitted successfully!", 'success');
             } else {
@@ -42,12 +50,17 @@ function submitForm(e, tabName) {
     }
 }
 
-function resetSFTForm() {
-    const turns = document.getElementById('turns');
+function resetForm(formType) {
+    const form = document.getElementById(formType === 'sft' ? 'sftForm' : 'dpoForm');
+    const turns = document.getElementById(formType + 'Turns');
     const turnElements = turns.getElementsByClassName('turn');
+
+    form.reset()
     while (turnElements.length > 1) {
         turnElements[turnElements.length - 1].remove();
     }
+
+    showToast("Form Resetted", 'success')
 }
 
 function openTab(tabName) {
@@ -68,21 +81,41 @@ function openTab(tabName) {
 
 document.getElementById("defaultOpen").click();
 
-function addTurn() {
-    const turns = document.getElementById('turns');
+function addTurn(formType) {
+    const turns = document.getElementById(formType + 'Turns');
     const newTurn = document.createElement('div');
     newTurn.classList.add("turn");
-    newTurn.innerHTML = `
-        <div>
-            <label for="user">User:</label>
-            <textarea id="user" name="user[]"></textarea>
-        </div>
-        <div>
-            <label for="gpt">GPT:</label>
-            <textarea id="gpt" name="gpt[]"></textarea>
-        </div>
-        <button type="button" class="delete-turn" onclick="deleteTurn(this)">Delete</button>
-    `;
+    
+    if (formType === 'sft') {
+        newTurn.innerHTML = `
+            <div>
+                <label for="user">User:</label>
+                <textarea id="user" name="user[]"></textarea>
+            </div>
+            <div>
+                <label for="gpt">GPT:</label>
+                <textarea id="gpt" name="gpt[]"></textarea>
+            </div>
+            <button type="button" class="delete-turn" onclick="deleteTurn(this)">Delete</button>
+        `;
+    } else {
+        newTurn.innerHTML = `
+            <div>
+                <label for="prompt">Prompt:</label>
+                <textarea id="prompt" name="prompt"></textarea>
+            </div>
+            <div>
+                <label for="chosen">Chosen:</label>
+                <textarea id="chosen" name="chosen"></textarea>
+            </div>
+            <div>
+                <label for="rejected">Rejected:</label>
+                <textarea id="rejected" name="rejected"></textarea>
+            </div>
+            <button type="button" class="delete-turn" onclick="deleteTurn(this)">Delete</button>
+        `;
+    }
+    
     turns.appendChild(newTurn);
     turns.scrollTop = turns.scrollHeight;
 }
@@ -97,10 +130,12 @@ async function openJsonModal(type) {
     const editJsonBtn = document.getElementById('editJsonBtn');
     const saveJsonBtn = document.getElementById('saveJsonBtn');
 
+    const propertyOrder = type === 'dpo' ? ['system', 'conversations', 'prompt', 'chosen', 'rejected', 'source'] : ['conversations', 'from', 'value', 'source'];
+
     try {
         const response = await fetch(`/${type}_data.json`);
         const data = await response.json();
-        jsonViewer.textContent = JSON.stringify(data, null, 2);
+        jsonViewer.textContent = JSON.stringify(data, propertyOrder, 2);
         hljs.highlightElement(jsonViewer);
 
         editJsonBtn.onclick = () => {
@@ -118,7 +153,7 @@ async function openJsonModal(type) {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(updatedData, null, 2)
+                    body: JSON.stringify(updatedData, propertyOrder, 2)
                 });
                 jsonViewer.contentEditable = false;
                 editJsonBtn.style.display = 'inline-block';

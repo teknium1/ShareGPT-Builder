@@ -6,7 +6,8 @@
 <body>
     <div class="container">
         <form id="sftForm" action="/sft" method="POST" onsubmit="submitForm(event, 'sft')">
-            <div class="turns" id="turns">
+            <div class="turns" id="sftTurns">
+                <button type="button" onclick="resetForm('sft')"><i class="fa-solid fa-rotate-right"></i></button>
                 <div class="system-container">
                     <label for="system">System:</label>
                     <textarea id="system" name="system"></textarea>
@@ -24,7 +25,7 @@
                 </div>
             </div>
             <div class="button-container">
-                <button type="button" id="add-turn-btn" onclick="addTurn()"><i class="fa-solid fa-plus"></i></button>
+                <button type="button" onclick="addTurn('sft')"><i class="fa-solid fa-plus"></i></button>
                 <input type="submit" value="Submit">
             </div>
         </form>
