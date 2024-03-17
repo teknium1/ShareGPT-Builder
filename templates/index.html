@@ -16,6 +16,16 @@
         <div id="dpo" class="tabcontent">{% include 'dpo_form.html' %}</div>
     </div>
     <div id="toast"></div>
+    <div id="jsonModal" class="modal">
+        <div class="modal-content">
+            <span class="close"><i class="fa-solid fa-xmark"></i></span>
+            <pre id="jsonViewer"></pre>
+            <button id="editJsonBtn">Edit</button>
+            <button id="saveJsonBtn" style="display: none;">Save</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
     <script src="../static/script.js"></script>
 </body>
 </html>

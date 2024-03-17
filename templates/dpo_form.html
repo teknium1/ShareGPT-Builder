@@ -6,8 +6,8 @@
 <body>
     <div class="container">
         <form id="dpoForm" action="/dpo" method="POST" onsubmit="submitForm(event, 'dpo')">
-            <div class="turns">
-                <div class="turn">
+            <div class="turns" style="display: block;">
+                <div class="turn" style="flex-direction: column;">
                     <div>
                         <label for="system">System:</label>
                         <textarea id="system" name="system"></textarea>
@@ -30,6 +30,7 @@
             </div>
             <div class="button-container">
                 <input type="submit" value="Submit">
+                <button type="button" onclick="openJsonModal('dpo')">View/Edit JSON</button>
             </div>
         </form>
     </div>

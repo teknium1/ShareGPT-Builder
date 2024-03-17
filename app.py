@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json, os
 
 app = Flask(__name__)
@@ -72,6 +72,32 @@ def dpo_form():
         return "Success", 200
 
     return render_template('index.html', active_tab='dpo')
+
+@app.route('/sft_data.json', methods=['GET', 'PUT'])
+def sft_data():
+    file_path = './sft_data.json'
+    if request.method == 'GET':
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        return jsonify(data)
+    elif request.method == 'PUT':
+        data = request.get_json()
+        with open(file_path, 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=4)
+        return jsonify({'message': 'SFT data updated successfully'})
+
+@app.route('/dpo_data.json', methods=['GET', 'PUT'])
+def dpo_data():
+    file_path = './dpo_data.json'
+    if request.method == 'GET':
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        return jsonify(data)
+    elif request.method == 'PUT':
+        data = request.get_json()
+        with open(file_path, 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=4)
+        return jsonify({'message': 'DPO data updated successfully'})
 
 if __name__ == '__main__':
     app.run(debug=True, port=7272)
