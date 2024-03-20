@@ -90,7 +90,7 @@
             .tabcontent {
                 color: black;
                 display: none;
-                padding: 50px;
+                padding: 10px 50px;
                 text-align: left;
             }
 
@@ -101,6 +101,34 @@
             .active {
                 box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); /* Add a drop shadow */
             }
+
+            #infoBubble {
+                margin:10px 25px;
+                background:lightblue;
+                padding:10px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+                visibility: hidden;
+            }
+
+            #infoBubble.visible{
+                visibility: visible;
+            }
+
+            #infoBubble::before{
+                content:"ℹ️";
+                margin-right:10px;
+            }
+
+            #infoBubble.error{
+                background:lightcoral;
+            }
+
+            #infoBubble.error::before{
+                content:"❌";
+                
+            }
+
         </style>
     </head>
     <body>
@@ -111,7 +139,14 @@
                 <button class="tablink" onclick="openTab('sft', this)" id="defaultOpen">SFT</button>
                 <button class="tablink" onclick="openTab('dpo', this)">DPO</button>
             </div>
-    
+
+            <div class="container">
+                <div id="infoBubble" class="">
+                    blabla
+                </div>
+            </div>
+
+            
             <div id="sft" class="tabcontent">
                 {% include 'sft_form.html' %}
             </div>
@@ -122,6 +157,30 @@
         </div>
     
         <script>
+            
+
+            function success(message){
+                let infoBubble = document.querySelector('#infoBubble');
+                infoBubble.textContent = message;
+                infoBubble.classList.remove("error");
+                infoBubble.classList.add("visible");                
+            }
+
+            function error(message){
+                let infoBubble = document.querySelector('#infoBubble');
+                infoBubble.textContent = message;
+                infoBubble.classList.add("error");
+                infoBubble.classList.add("visible");                
+            }
+
+            function hideBubble(){
+                let infoBubble = document.querySelector('#infoBubble');
+                infoBubble.textContent = "";
+                infoBubble.classList.remove("error");
+                infoBubble.classList.remove("visible");                
+            }
+
+
             function submitForm(e, formId, tabName) {
                 e.preventDefault();
                 var form = document.getElementById(formId);
@@ -132,16 +191,17 @@
                 .then(response => {
                     if (response.ok) {
                         // On success, open the specified tab and update the URL
-                        openTab(tabName);
+                        success("Form submission succeded.");
                         history.pushState({}, "", "/");
                     } else {
-                        alert("Form submission failed.");
+                        error("Form submission failed.");
                     }
                 })
                 .catch(error => console.error('Error:', error));
             }
 
             function openTab(tabName, elmnt) {
+                hideBubble();
                 var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
                 for (i = 0; i < tabcontent.length; i++) {
