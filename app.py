@@ -1,10 +1,21 @@
 import gradio as gr
-
 from huggingface_hub.utils._auth import get_token
-from huggingface_hub import InferenceClient
+from huggingface_hub import InferenceClient, whoami
+
+from dataset_uploader import ParquetScheduler
 
 # get token if we're already logged in
 hf_token = get_token()
+
+contributor_username = whoami()["name"]
+
+# IMPORTANT !!!
+# change these values
+# repo to where we push the data
+sft_scheduler = ParquetScheduler(repo_id="not-lain/sft",every=5)
+
+
+show_info = True
 
 def generate(messages):
     """
@@ -76,8 +87,26 @@ def clear_both_fields():
     return None, None
 
 
-def save_data(history):
-    gr.Info("data has been saved successfully")
+def save_sft_data(history):
+    """
+    A function that pushes the data to the hub.
+    """
+    # setup the info message to only show once
+    global show_info 
+
+    # preparing the submission
+    data = {"contributor" : contributor_username}
+    data["model_name"] = "Qwen/Qwen2.5-Coder-32B-Instruct"
+    data["conversations"] = history
+
+    # submitting the data
+    sft_scheduler.append(data)
+    
+    # show the info message only once 
+    if show_info:
+        gr.Info("Data has been saved successfully (this message is only shown once)")
+        gr.Info("The scheduler may take up to 5 minutes to push the data, please wait 🤗")
+        show_info = False
 
 
 with gr.Blocks() as demo:
@@ -93,6 +122,6 @@ with gr.Blocks() as demo:
             clear_button = gr.Button("Clear")
             clear_button.click(clear_both_fields, outputs=[textbox, chatbot])
             submit = gr.Button("save chat", variant="primary")
-            submit.click(save_data, inputs=[chatbot])
+            submit.click(save_sft_data, inputs=[chatbot])
 
 demo.launch(debug=True, show_error=True)
