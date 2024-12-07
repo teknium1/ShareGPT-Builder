@@ -3,3 +3,4 @@
 README.html
 dpo_data.json
 sft_data.json
+__pycache__/
