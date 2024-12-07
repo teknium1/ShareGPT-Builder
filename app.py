@@ -10,8 +10,9 @@ hf_token = get_token()
 
 contributor_username = whoami()["name"]
 show_info = True
-
-every = 5 # we push once every 5 minutes
+# will remove the metadata field from chat history
+remove_metadata = True 
+every = 1 # we push once every 5 minutes
 
 # IMPORTANT !!!
 # change these values
@@ -69,6 +70,7 @@ def save_sft_data(system_prompt="", history=[]):
     """
     A function that pushes the data to the hub.
     """
+    
     # setup the info message to only show once
     global show_info
 
@@ -78,12 +80,19 @@ def save_sft_data(system_prompt="", history=[]):
         return
     # preparing the submission
     data = {"contributor": contributor_username}
+    # removes the extra metadata field from the chat history
+    if remove_metadata : 
+        for i in range(len(history)):
+            sample = history[i]
+            history[i] = {"role":sample["role"],"content":sample["content"]}
     # add system prompt if provided
     system_prompt = system_prompt.strip()
     if system_prompt != "":
-        history.insert(0, chat_message("system", system_prompt))
+        sys = chat_message("system", system_prompt)
+        history.insert(0, sys )
     
-    data["timestamp"] = datetime.datetime.utcnow().isoformat()
+
+    data["timestamp"] = str(datetime.datetime.now(datetime.UTC))
     data["conversations"] = history
 
     # submitting the data
@@ -122,5 +131,6 @@ with gr.Blocks() as demo:
             clear_button.click(clear_both_fields, outputs=[textbox, chatbot])
             submit = gr.Button("save chat", variant="primary")
             submit.click(save_sft_data, inputs=[system_prompt, chatbot])
+    
 
 demo.launch(debug=True, show_error=True)
