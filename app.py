@@ -12,7 +12,7 @@ contributor_username = whoami()["name"]
 show_info = True
 # will remove the metadata field from chat history
 remove_metadata = True
-every = 5  # we push once every 5 minutes
+every = 1  # we push once every 1 minute (use 5 if there are lots of people using the same HF token)
 
 # IMPORTANT !!!
 # change these values
@@ -117,7 +117,7 @@ def save_sft_data(system_prompt="", history=[]):
     if show_info:
         gr.Info("Data has been saved successfully (this message is only shown once)")
         gr.Info(
-            "The scheduler may take up to 5 minutes to push the data, please wait 🤗"
+            "The scheduler may take up to 1 minute to push the data, please wait 🤗"
         )
         show_info = False
 
@@ -164,7 +164,7 @@ def save_dpo_data(system_prompt="", history=[],chosen="",rejected=""):
     if show_info:
         gr.Info("Data has been saved successfully (this message is only shown once)")
         gr.Info(
-            "The scheduler may take up to 5 minutes to push the data, please wait 🤗"
+            "The scheduler may take up to 1 minute to push the data, please wait 🤗"
         )
         show_info = False
 
