@@ -78,6 +78,12 @@ def save_sft_data(system_prompt="", history=[]):
     if history == []:
         gr.Error("you need to setup a chat first")
         return
+    
+    # case history ends with user prompt
+    if history[-1]["role"] == "user" : 
+        gr.Error("history needs to end with assistant prompt")
+        return
+
     # preparing the submission
     data = {"contributor": contributor_username}
     # removes the extra metadata field from the chat history
