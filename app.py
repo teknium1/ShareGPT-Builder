@@ -12,7 +12,7 @@ contributor_username = whoami()["name"]
 show_info = True
 # will remove the metadata field from chat history
 remove_metadata = True
-every = 1  # we push once every 5 minutes
+every = 5  # we push once every 5 minutes
 
 # IMPORTANT !!!
 # change these values
