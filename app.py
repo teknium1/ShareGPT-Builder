@@ -2,8 +2,11 @@ import gradio as gr
 from huggingface_hub.utils._auth import get_token
 from huggingface_hub import whoami
 import datetime
-
 from dataset_uploader import ParquetScheduler
+
+##########
+# Setup  #
+##########
 
 # get token if we're already logged in
 hf_token = get_token()
@@ -20,6 +23,11 @@ every = 1  # we push once every 1 minute (use 5 if there are lots of people usin
 
 sft_scheduler = ParquetScheduler(repo_id="not-lain/sft", every=every)
 dpo_scheduler = ParquetScheduler(repo_id="not-lain/dpo", every=every)
+
+
+##########
+# Utils  #
+##########
 
 
 def chat_message(role, content):
@@ -64,6 +72,7 @@ def clear_both_fields():
     """
     return None, None
 
+
 def clear_3_fields():
     """
     A function that clears both the textbox and the chatbot.
@@ -77,14 +86,15 @@ def setup_submission(system_prompt="", history=[]):
         for i in range(len(history)):
             sample = history[i]
             history[i] = {"role": sample["role"], "content": sample["content"]}
-    
+
     # add system prompt if provided
     system_prompt = system_prompt.strip()
     if system_prompt != "":
         sys = chat_message("system", system_prompt)
         history.insert(0, sys)
-    
+
     return history
+
 
 def save_sft_data(system_prompt="", history=[]):
     """
@@ -122,7 +132,7 @@ def save_sft_data(system_prompt="", history=[]):
         show_info = False
 
 
-def save_dpo_data(system_prompt="", history=[],chosen="",rejected=""):
+def save_dpo_data(system_prompt="", history=[], chosen="", rejected=""):
     """
     A function that pushes the data to the hub.
     """
@@ -133,19 +143,20 @@ def save_dpo_data(system_prompt="", history=[],chosen="",rejected=""):
     # case user clicked submit and did not have any chat history
     if history == []:
         raise gr.Error("you need to setup a chat first")
-    
+
     # case history ends with user prompt
     if history[-1]["role"] == "assistant":
         raise gr.Error("history needs to end with user prompt")
 
     # case chosen and rejected are not full
-    chosen, rejected = chosen.strip() , rejected.strip()
-    if chosen == "" or rejected == "" : 
-        raise gr.Error("both chosen and rejected need to have a text when you click the submit button")
-    
+    chosen, rejected = chosen.strip(), rejected.strip()
+    if chosen == "" or rejected == "":
+        raise gr.Error(
+            "both chosen and rejected need to have a text when you click the submit button"
+        )
 
     history = setup_submission(system_prompt, history)
-    chosen_chat, rejected_chat = history.copy() , history.copy()
+    chosen_chat, rejected_chat = history.copy(), history.copy()
     chosen_chat.append(chat_message("user", chosen))
     rejected_chat.append(chat_message("user", rejected))
 
@@ -173,7 +184,14 @@ def undo_chat(history):
     return history[:-2]
 
 
+##############
+# Interface  #
+##############
+
 with gr.Blocks() as demo:
+    gr.Markdown("<h1 style='text-align: center'>ShareGPT-Builder</h1>")
+
+    #### SFT ####
     with gr.Tab("SFT"):
         with gr.Accordion("system prompt", open=False):
             system_prompt = gr.TextArea(show_label=False, container=False)
@@ -192,8 +210,11 @@ with gr.Blocks() as demo:
             clear_button = gr.Button("Clear")
             clear_button.click(clear_both_fields, outputs=[textbox, chatbot])
             submit = gr.Button("save chat", variant="primary")
-            submit.click(save_sft_data, inputs=[system_prompt, chatbot])
+            submit.click(save_sft_data, inputs=[system_prompt, chatbot]).then(
+                clear_both_fields, outputs=[textbox, chatbot]
+            )
 
+    #### DPO ####
     with gr.Tab("DPO"):
         with gr.Accordion("system prompt", open=False):
             dpo_system_prompt = gr.TextArea(show_label=False, container=False)
@@ -214,7 +235,9 @@ with gr.Blocks() as demo:
             clear_textbox_field, outputs=[dpo_chosen_textbox]
         )
         dpo_rejected_textbox.submit(
-            fn=sft_chat, inputs=[dpo_rejected_textbox, dpo_chatbot], outputs=[dpo_chatbot]
+            fn=sft_chat,
+            inputs=[dpo_rejected_textbox, dpo_chatbot],
+            outputs=[dpo_chatbot],
         ).then(  # empty field for convinience
             clear_textbox_field, outputs=[dpo_rejected_textbox]
         )
@@ -222,10 +245,22 @@ with gr.Blocks() as demo:
         with gr.Row():
             dpo_clear_button = gr.Button("Clear")
             dpo_clear_button.click(
-                clear_3_fields, outputs=[dpo_chosen_textbox,dpo_rejected_textbox, dpo_chatbot]
+                clear_3_fields,
+                outputs=[dpo_chosen_textbox, dpo_rejected_textbox, dpo_chatbot],
             )
             dpo_submit = gr.Button("save chat", variant="primary")
-            dpo_submit.click(save_dpo_data, inputs=[dpo_system_prompt, dpo_chatbot,dpo_chosen_textbox, dpo_rejected_textbox])
+            dpo_submit.click(
+                save_dpo_data,
+                inputs=[
+                    dpo_system_prompt,
+                    dpo_chatbot,
+                    dpo_chosen_textbox,
+                    dpo_rejected_textbox,
+                ],
+            ).then(
+                clear_3_fields,
+                outputs=[dpo_chosen_textbox, dpo_rejected_textbox, dpo_chatbot],
+            )
 
 
 demo.launch(debug=True, show_error=True)
