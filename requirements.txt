@@ -1,1 +1,5 @@
-Flask==2.0.2
+numpy==1.26.4
+huggingface_hub==0.26.2
+pandas==2.2.3
+pyarrow==18.1.0
+gradio==5.3.0
