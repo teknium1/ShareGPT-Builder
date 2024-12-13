@@ -30,19 +30,31 @@
         </form>
     </div>
     <script>
-    function addTurn() {
-        var turns = document.getElementById('turns');
-        var newTurn = document.createElement('div');
-        newTurn.innerHTML = '<div><label for="user">User:</label><textarea id="user" name="user[]"></textarea></div><div><label for="gpt">GPT:</label><textarea id="gpt" name="gpt[]"></textarea></div>';
-        turns.appendChild(newTurn);
-    }
-    </script>
-    <script>
-        document.getElementById("sftForm").addEventListener("submit", function(){
+
+        let initialTurn = document.querySelector('.turn');
+
+        function addTurn() {
+            var turns = document.getElementById('turns');
+            var newTurn = document.createElement('div');
+            newTurn.innerHTML = '<div><label for="user">User:</label><textarea id="user" name="user[]"></textarea></div><div><label for="gpt">GPT:</label><textarea id="gpt" name="gpt[]"></textarea></div>';
+            turns.appendChild(newTurn);
+        }
+        
+        function resetTurns(){
+            let turns = document.getElementById('turns');
+            turns.innerHTML = "";
+            turns.appendChild(initialTurn);
+        }
+
+        let form = document.getElementById("sftForm")
+        form.addEventListener("submit", function(){
             setTimeout(function() {
                 document.getElementById("sftForm").reset();
+                resetTurns();
             }, 10);
         });
+
+       
     </script>
 </body>
 </html>
