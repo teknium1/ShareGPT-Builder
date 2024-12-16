@@ -8,23 +8,21 @@ from dataset_uploader import ParquetScheduler
 # Setup  #
 ##########
 
-# get token if we're already logged in
-hf_token = get_token()
-
 contributor_username = whoami()["name"]
-show_info = True
-# will remove the metadata field from chat history
-remove_metadata = True
+
+# only show an info the first time uploading to the hub
+show_info = True 
+
 every = 1  # we push once every 1 minute (use 5 if there are lots of people using the same HF token)
 
 choices = ["sharegpt","standard"]
 
 # schedulers
 schedulers = {
-    "sft-sharegpt": ParquetScheduler(repo_id="not-lain/sft-sharegpt", every=every),
-    "sft-standard": ParquetScheduler(repo_id="not-lain/sft-standard", every=every),
-    "dpo-sharegpt": ParquetScheduler(repo_id="not-lain/dpo-sharegpt", every=every),
-    "dpo-standard": ParquetScheduler(repo_id="not-lain/dpo-standard", every=every),
+    "sft-sharegpt": ParquetScheduler(repo_id=f"{contributor_username}/sft-sharegpt", every=every),
+    "sft-standard": ParquetScheduler(repo_id=f"{contributor_username}/sft-standard", every=every),
+    "dpo-sharegpt": ParquetScheduler(repo_id=f"{contributor_username}/dpo-sharegpt", every=every),
+    "dpo-standard": ParquetScheduler(repo_id=f"{contributor_username}/dpo-standard", every=every),
 }
 
 
