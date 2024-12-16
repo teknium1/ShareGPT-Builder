@@ -10,12 +10,18 @@ Firstly, it allows you to manually construct and store ShareGPT Formatted (SFT) 
 
 For datasets using this format, refer to the [Hermes 2.5 Dataset here](https://huggingface.co/datasets/teknium/OpenHermes-2.5).
 
-<img width="902" alt="image" src="https://github.com/user-attachments/assets/daef508c-6e88-40cd-88be-13fdabcc057b">
+<img width="902" alt="image" src="https://github.com/user-attachments/assets/7f9a259b-a83d-4136-9fd7-30f63c0b7100">
+
 
 ### Direct Preference Optimization (DPO) RLHF Sample Builder:
 Secondly, the application also includes a DPO Sample Builder. This feature enables the creation of sample comparison conversation responses, for Reinforcement Learning from Human Feedback (RLHF). This data gets automatically uploaded to the hub, and is in the Intel NeuralChat DPO format.
 
-<img width="902" alt="image" src="https://github.com/user-attachments/assets/5de1c506-4eab-42d2-beb7-19b743f343b0">
+<img width="902" alt="image" src="https://github.com/user-attachments/assets/21f827c4-d709-45df-a2e4-6104e2436742">
+
+### Datasets inspector
+In this tab you can check all of your uploaded datasets, since the datasets are not uploaded in real time and there's an interval between the commits you will have to wait a little bit until the upload finishes as well as huggingface dataset viewer finished processing the newly commited data.
+
+<img width="902" alt="image" src="https://github.com/user-attachments/assets/f637c051-8058-4aab-94e8-6535f39cd3e7">
 
 ## Installation
 
@@ -59,6 +65,7 @@ python app.py
 ## Contributing
 Contributions are welcome and greatly appreciated! Every little bit helps, and credit will always be given.
 
+* `12/17/2024` : Thanks to [not-lain](https://github.com/not-lain) for fixing sharegpt template as well as adding the dataset viewer tab
 * `12/13/2024` : Thanks to [aldryss](https://github.com/aldryss) for updating the UI 🔥
 * `12/12/2024` : Thanks to [not-lain](https://github.com/not-lain) for the help switching from flask to gradio and supporting automatic dataset upload 🔥
 
