@@ -1,5 +1,4 @@
 import gradio as gr
-from huggingface_hub.utils._auth import get_token
 from huggingface_hub import whoami
 import datetime
 from dataset_uploader import ParquetScheduler
@@ -277,6 +276,16 @@ with gr.Blocks() as demo:
                 clear_3_fields,
                 outputs=[dpo_chosen_textbox, dpo_rejected_textbox, dpo_chatbot],
             )
+    with gr.Tab("Inspect datasets"): 
+        dataset = gr.Dropdown(choices=list(schedulers.keys()))
+        @gr.render(inputs=dataset)
+        def show_dataset(dataset) :
+            gr.HTML(f""" <iframe
+            src="https://huggingface.co/datasets/{contributor_username}/{dataset}/embed/viewer/default/train?row=0"
+            frameborder="0"
+            width="100%"
+            height="560px"
+            ></iframe>""")
 
 if __name__ == "__main__":
     demo.launch(debug=True, show_error=True)
